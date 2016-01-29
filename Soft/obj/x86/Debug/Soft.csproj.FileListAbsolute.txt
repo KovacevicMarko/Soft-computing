@@ -1,0 +1,12 @@
+C:\Users\marko\Desktop\Soft\Soft\bin\Debug\Soft.exe
+C:\Users\marko\Desktop\Soft\Soft\bin\Debug\Soft.pdb
+C:\Users\marko\Desktop\Soft\Soft\obj\x86\Debug\MainWindow.baml
+C:\Users\marko\Desktop\Soft\Soft\obj\x86\Debug\MainWindow.g.cs
+C:\Users\marko\Desktop\Soft\Soft\obj\x86\Debug\App.g.cs
+C:\Users\marko\Desktop\Soft\Soft\obj\x86\Debug\Soft_MarkupCompile.cache
+C:\Users\marko\Desktop\Soft\Soft\obj\x86\Debug\Soft.g.resources
+C:\Users\marko\Desktop\Soft\Soft\obj\x86\Debug\Soft.Properties.Resources.resources
+C:\Users\marko\Desktop\Soft\Soft\obj\x86\Debug\Soft.csproj.GenerateResource.Cache
+C:\Users\marko\Desktop\Soft\Soft\obj\x86\Debug\Soft.exe
+C:\Users\marko\Desktop\Soft\Soft\obj\x86\Debug\Soft.pdb
+C:\Users\marko\Desktop\Soft\Soft\obj\x86\Debug\Soft_MarkupCompile.lref

@@ -1,0 +1,1 @@
+[('Employer', 'NNP'), ('is', 'VBZ'), ('working', 'VBG'), ('on', 'IN'), ('a', 'DT'), ('0', 'CD'), ('or', 'CC'), ('1', 'CD'), ('projects', 'NNS'), (',', ','), ('and', 'CC'), ('on', 'IN'), ('one', 'CD'), ('project', 'NN'), ('are', 'VBP'), ('working', 'VBG'), ('1', 'CD'), ('or', 'CC'), ('*', 'JJ'), ('employers', 'NNS'), ('.', '.')
