@@ -89,6 +89,8 @@ namespace Soft
 
         private int numRel;
 
+        private Dictionary<int, String> linijeHash;
+
         #endregion Atributi
         #region Konstruktor
         public MainWindow()
@@ -102,6 +104,7 @@ namespace Soft
             _entiteti = new Dictionary<int, List<String>>();
             _kardinaliteti = new Dictionary<int, String>();
             linije = new Dictionary<Line, string>();
+            linijeHash = new Dictionary<int, String>();
             modals = new List<string>();
             _file = String.Format("{0}", System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Output.txt"));
             this.Parsiraj(_file);
@@ -121,9 +124,10 @@ namespace Soft
             string[] separatorNN = new string[] { ", 'NN'" };
             string[] separatorNNS = new string[] { ", 'NNS'" };
             string[] separatorCD = new string[] { ", 'CD'" };
-            string[] separatorWBG = new string[] { ", 'WBG'" };
+            string[] separatorNONE = new string[] { ", '-NONE-'" };
+            string[] separatorVBN = new string[] { ", 'VBN'" };
+            string[] separatorVB = new string[] { ", 'VB'" };
             string[] temp = text.Split(stringSeparators, StringSplitOptions.None);
-            Console.WriteLine(temp[0]);
             string entitet = "";
             string kardinalitet = "";
             for(int i = 0; i < temp.Length; i++)
@@ -131,6 +135,7 @@ namespace Soft
                 List<String> entiteti = new List<String>();
                 string[] temp2 = temp[i].Split('(');
                 int numCD = 0;
+                bool added = false;
                 for(int j = 0; j < temp2.Length; j++)
                 {
                     if(temp2[j].Contains("NNP"))
@@ -151,22 +156,32 @@ namespace Soft
                     {
                         string tempKard = temp2[j].Split(separatorCD, StringSplitOptions.None)[0];
                         kardinalitet += tempKard; 
-                        Console.WriteLine("KARD JE" + kardinalitet);
                         numCD++;
                     }
-                    else if(temp2[j].Contains("WBG"))
+                    else if(temp2[j].Contains("NONE"))
                     {
-                        string[] glg = temp2[j].Split(separatorWBG, StringSplitOptions.None);
+                        string tempKard = temp2[j].Split(separatorNONE, StringSplitOptions.None)[0];
+                        kardinalitet += tempKard;
+                        numCD++;
+                    }
+
+                    else if(temp2[j].Contains("VB"))
+                    {
+                        string[] glg = temp2[j].Split(separatorVB, StringSplitOptions.None);
+                        
                         for(int k = 0; k < glg.Length; k++)
                         {
-                            if((!glg[k].Equals("are")) && (!glg[k].Equals("is")))
+                            if(!added)
                             {
-                                if(!modals.Contains(glg[k]))
+                                if((!glg[k].Equals("), ") && (!glg[k].Contains("'are'")) && (!glg[k].Contains("'is'"))))
                                 {
-                                    modals.Add(glg[k]);
+                                    modals.Add(CommonFunction.reduceModals(glg[k]));
+                                    Console.WriteLine("VB!!!" + CommonFunction.reduceModals(glg[k]) + "a recnija " + i);
+                                    added = true;
                                 }
                             }
                         }
+
                     }
                     if(numCD == 2)
                     {
@@ -192,6 +207,8 @@ namespace Soft
         {
             _entiteti = CommonFunction.Reduce(_entiteti);
             int j = 0;
+            System.Random r = new System.Random();
+            bool napravio = false;
             foreach(KeyValuePair<int, List<String>> ents in _entiteti)
             {
                 j++;
@@ -230,18 +247,29 @@ namespace Soft
 
                     });
                     grid.Children.Add(new TextBlock() { Text = ents.Value.ElementAt(i), FontSize = 20 });
-                    System.Random r = new System.Random();
-                    r.Next();
-                    int x = 75 *(j+2*i+1);
-                    int y = 75 * (2*i+1);
+                    
+                    //int x = 75 *(j+2*i+1);
+                    //int y = 75 * (2*i+1);
+                    //int x = r.Next(0, 600);
+                    //int y = r.Next(0, 200);
+                    
+                    int x = 30 * j ;
+                    int y = 30 * j ;
+                    if(napravio)
+                    {
+                        napravio = false;
+                        x = 150 * j;
+                        y = 150 * j;
+
+                    }
                     Canvas.SetTop(grid, x);
                     Canvas.SetLeft(grid, y);
+                    napravio = true;
                     LayoutRoot.Children.Add(grid);
                     int[] array = new int[2];
                     array[0] = x;
                     array[1] = y;
                     String temp = String.Format("{0},{1}", ents.Value.ElementAt(i), grid.GetHashCode());
-                    Console.WriteLine(temp);
                     dinamicki.Add(array, temp);
                      
                 }
@@ -251,6 +279,9 @@ namespace Soft
                     rhombus.MouseLeftButtonDown += grid_MouseLeftButtonDown;
                     rhombus.MouseMove += grid_MouseMove;
                     rhombus.MouseLeftButtonUp += grid_MouseLeftButtonUp;
+                    Console.WriteLine("J je " + j);
+                    string rhmName = modals.ElementAt(j-1);
+                    //string rhmName = "aaa";
                     rhombus.Children.Add(new Ellipse
                     {
                         Stroke = Brushes.CadetBlue,
@@ -261,9 +292,9 @@ namespace Soft
                         Name = rhombusName
 
                     });
-                    rhombus.Children.Add(new TextBlock() { Text = rhombusText, FontSize = 10 });
-                    int x = 200 * j;
-                    int y = 200 * j;
+                    rhombus.Children.Add(new TextBlock() { Text = rhmName, FontSize = 10 });
+                    int x = 70 * j;
+                    int y = 70 * j;
                     Canvas.SetTop(rhombus, x);
                     Canvas.SetLeft(rhombus, y);
                     LayoutRoot.Children.Add(rhombus);
@@ -271,7 +302,6 @@ namespace Soft
                     array[0] = x;
                     array[1] = y;
                     String temp = String.Format("{0}{1}", rhombusName, rhombus.GetHashCode());
-                    Console.WriteLine(temp);
                     dinamickiVeze.Add(array, temp);
                 }
             }
@@ -285,11 +315,11 @@ namespace Soft
                     string temp = ents.Value.Split(',')[0];
                     if(veze[0].Equals(temp))
                     {
-                        this.createLines(String.Format("{0},{1}", ents.Value, veze[2]), dinVeze.Key, ents.Key);
+                        this.createLines(String.Format("{0},{1}", ents.Value, veze[2]),String.Format("{0} to {1}",veze[0],veze[1]), dinVeze.Key, ents.Key);
                     }
                     else if(veze[1].Equals(temp))
                     {
-                        this.createLines(String.Format("{0},{1}", ents.Value, veze[2]), dinVeze.Key, ents.Key);
+                        this.createLines(String.Format("{0},{1}", ents.Value, veze[2]), String.Format("{1} to {0}", veze[0], veze[1]), dinVeze.Key, ents.Key);
                     }
 
                 }
@@ -301,59 +331,51 @@ namespace Soft
         /// </summary>
         /// <param name="first">X i Y kordinate poveznika.</param>
         /// <param name="second">X i Y kordinate entiteta.</param>
-        private void createLines(string name, int[] first, int[] second)
+        private void createLines(string name, string toolTip, int[] first, int[] second)
         {
             string tempToolTip = "";
             foreach(KeyValuePair<int, string> kard in _kardinaliteti)
             {
                 if(kard.Key.Equals(numRel))
                 {
-                    tempToolTip = kard.Value;
+                    tempToolTip = CommonFunction.reduceCard(kard.Value);
                 }
             }
-            Console.WriteLine(
-                "NAME je " + name,
-                "Prvi je " + first.ElementAt(0) +
-                "Drugi je " + second.ElementAt(0) +
-                "Treci je " + first.ElementAt(1) +
-                "Cetvrti je" + second.ElementAt(1));
-            
 
-            string tempName = name.Split(',')[0];
-
+            string tTip = String.Format("{0} -> {1}", toolTip, tempToolTip);
+            string tempName = name.Split(',')[0];           
             Line line = new Line();
+            line.MouseLeftButtonDown += line_MouseLeftButtonDown;
             line.Stroke = Brushes.Red;
             line.Fill = Brushes.Red;
-            line.ToolTip = tempToolTip;
+            line.ToolTip = tTip;
             line.Name = tempName;
             line.X1 = first.ElementAt(0) + 30;
-            line.X2 = second.ElementAt(0) + 20;
+            line.X2 = second.ElementAt(0) +50;
             line.Y1 = first.ElementAt(1) + 25;
-            line.Y2 = second.ElementAt(1) + 100;
+            line.Y2 = second.ElementAt(1) +30;
             LayoutRoot.Children.Add(line);
             string[] temp = name.Split(',');
             string lineTemp = String.Format("{0},{1}", temp[1], temp[2]);
             linije.Add(line, lineTemp);
+            linijeHash.Add(line.GetHashCode(), tTip);
             numRel++;
-        }
-
-        private void setPosition(Line line, double x, double y, bool isEntitet)
-        {
-            if(isEntitet)
-            {
-                line.X2 = x;
-                line.Y2 = y;
-            }
-            else
-            {
-                line.X1 = x;
-                line.Y1 = y;
-            }
         }
 
         #endregion Draw
 
         #region Events
+
+        private void line_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            foreach(KeyValuePair<int, String> entry in linijeHash)
+            {
+                if(entry.Key.Equals(sender.GetHashCode()))
+                {
+                    MessageBox.Show(entry.Value, "Cardinalities");            
+                }
+            }
+        }
 
         /// <summary>
         /// Event koji se aktivira klikom nad entitetom.
@@ -425,6 +447,40 @@ namespace Soft
             double x = e.GetPosition(LayoutRoot).X;
             double y = e.GetPosition(LayoutRoot).Y;
         }
+
+        /// <summary>
+        /// Metoda koja sluzi za izmenu pozicije linije koja spaja entitet i poveznik.
+        /// </summary>
+        /// <param name="line">Linija kojoj treba podesiti poziciju.</param>
+        /// <param name="x">x koordinata linije.</param>
+        /// <param name="y">y koordinata linije.</param>
+        /// <param name="isEntitet">Indikator da li je u pitanju entitet ili poveznik.</param>
+        private void setPosition(Line line, double x, double y, bool isEntitet)
+        {
+            if(isEntitet)
+            {
+                line.X2 = x;
+                line.Y2 = y;
+            }
+            else
+            {
+                line.X1 = x;
+                line.Y1 = y;
+            }
+        }
+
+        private void Canvas_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            var element = sender as UIElement;
+            var position = e.GetPosition(element);
+            var transform = element.RenderTransform as MatrixTransform;
+            var matrix = transform.Matrix;
+            var scale = e.Delta >= 0 ? 1.1 : (1.0 / 1.1); // choose appropriate scaling factor
+
+            matrix.ScaleAtPrepend(scale, scale, position.X, position.Y);
+            transform.Matrix = matrix;
+        }
+
         #endregion Events
 
         #region Generator

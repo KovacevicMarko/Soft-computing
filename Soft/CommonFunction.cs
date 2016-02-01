@@ -51,6 +51,25 @@ namespace Soft
             }
             return temp; 
         }
+
+        public static String reduceCard(string card)
+        {
+            string[] temp = card.Split('\'');
+            if(temp[1].Equals(temp[3]))
+            {
+                return String.Format("{0} and only {1}", temp[1], temp[3]);
+            }
+            else
+            {
+                return String.Format("{0} or {1}", temp[1], temp[3]);
+            }
+        }
+
+        public static String reduceModals(string modal)
+        {
+            string[] temp = modal.Split('\'');
+            return String.Format("{0}", temp[1]);
+        }
     }
 }
 /*var rhombus = new Grid();

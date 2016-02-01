@@ -10,3 +10,5 @@ C:\Users\marko\Desktop\Soft\Soft\obj\x86\Debug\Soft.csproj.GenerateResource.Cach
 C:\Users\marko\Desktop\Soft\Soft\obj\x86\Debug\Soft.exe
 C:\Users\marko\Desktop\Soft\Soft\obj\x86\Debug\Soft.pdb
 C:\Users\marko\Desktop\Soft\Soft\obj\x86\Debug\Soft_MarkupCompile.lref
+C:\Users\marko\Desktop\SOFT - Repo\Soft-computing\Soft\obj\x86\Debug\Soft.exe
+C:\Users\marko\Desktop\SOFT - Repo\Soft-computing\Soft\obj\x86\Debug\Soft.pdb
