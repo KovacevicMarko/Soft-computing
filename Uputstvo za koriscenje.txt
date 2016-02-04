@@ -1,0 +1,35 @@
+U projektu su korišæeni dodaci koji se moraju instalirati i importovati da bi se kod mogao pokrenuti.
+Pre instalacije potrebno je imati instaliranu Python verziju 2.7 ili 3.2+
+
+1. NLTK - Natural Language Toolkit  
+   Instalacija NLTK se vrši na sledeæi naèin:
+	1.Prvo je potrebno preuzeti nltk instalaciju sa linka http://www.nltk.org/install.html
+	  Na njemu stoji i uputstvo za instalaciju na windows/unix/mac operativnim sistemima.
+	2.Nakon toga potrebno je otvoriti python interpreter koji koristite i uneti sledeæe:
+	  >>> import nltk
+	  >>> nltk.download()
+	
+	Ovim æe vam se otvoriti novi prozor NLTK Downloader u kome odaberete šta vam je potrebno.
+	Najbolje je otiæi na All i odraditi download toga. 
+	Nakon toga nltk je spreman za korišæenje.
+
+2. Tesseract
+   Teseract se instalira tako sto se u terminalu unese
+	
+	>>sudo apt-get install tesseract-ocr
+	
+   Zatim 
+	
+	>>pip install pytesseract
+
+3. Pil - python imaging library
+   Za korišæenje je potrebno instalirati i Pil u nekim distribucijama linux-a on postoji, ukoliko ne instalira se tako
+   što se u terminalu pokrene komanda:
+ 	
+	>> sudo apt-get install python-imaging
+   ili
+
+	>> sudo apt-get install libjpeg libjpeg-dev libfreetype6 libfreetype6-dev zlib1g-dev
+
+4. Projekat je podešen da radi direktno kopiranje output fajla u folder u kome se nalazi C# kod radi bržeg pokretanja, 
+   tako da je potrebno podesiti putanju u okviru python dela projekta i ubaciti projekte u isti folder(kod nas shared folder)
